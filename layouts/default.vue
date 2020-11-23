@@ -1,8 +1,24 @@
-<template>
-  <div>
-    <Nuxt />
-  </div>
+<template lang="pug">
+  div
+    Nuxt/
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  mounted() {
+    /*
+    ** The loading Property
+    ** https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-loading
+    */
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()      
+      setTimeout(() => this.$nuxt.$loading.finish(), 500)
+    })
+  }
+})
+</script>
 
 <style>
 html {
