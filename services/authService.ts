@@ -1,7 +1,6 @@
-import axios from 'axios'
-
-import { Http } from './http'
+import api from './api'
 import securityService from './securityService'
+
 import { ResponseWrapper, ErrorWrapper } from './utils'
 import $store from '../store'
 
@@ -9,6 +8,7 @@ import { AuthinputDataInterface } from '@/models/authModels'
 
 
 let BEARER: string = ''
+let isAuth: boolean = false
 
 export class AuthService {
   /**
@@ -20,7 +20,7 @@ export class AuthService {
   static async makeLogin (data:AuthinputDataInterface) {
     try {
       const fingerprint = await securityService()
-      const response = await axios.post(`${process.env.API_BASE_URL}/auth/login`,
+      const response = await api.post(`${process.env.API_BASE_URL}/auth/login`,
         { data, fingerprint },
         { withCredentials: true })
       const token = response.data.data.accessToken
@@ -38,7 +38,7 @@ export class AuthService {
 
   static async makeLogout () {
     try {
-      const response = await new Http( true ).post('auth/logout', {}, { withCredentials: true })
+      const response = await api.post('auth/logout', {}, { withCredentials: true })
       _resetAuthData()
       //TODO: understand how redirect programaticaly from here
       //this.$router.push({ name: 'login' }).catch(() => {}) 
@@ -67,6 +67,14 @@ export class AuthService {
     BEARER = `Bearer ${accessToken}`
   }
 
+  static getIsAuth () {
+    return isAuth
+  }
+
+  static setIsAuth (val:boolean) {
+    isAuth = val
+  }
+
 }
 /**
  ******************************
@@ -80,8 +88,10 @@ function _resetAuthData () {
 
   // reset tokens
   AuthService.setBearer('')
+  AuthService.setIsAuth(false)
 }
 
 function _setAuthData (accessToken:string) {
   AuthService.setBearer(accessToken)
+  AuthService.setIsAuth(true)
 }
