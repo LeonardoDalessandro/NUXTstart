@@ -33,10 +33,13 @@ class UserModule extends VuexModule {
 
   @Action
   getCurrent () {
-    //TODO: verify userService dependency
+    /*
     return UsersService.getCurrent()
       .then(user => this.context.commit('SET_ITEM', user.data))
       .catch(error => this.context.commit('feedback/SET_ITEM', { status: 2, body: error.message }, { root: true }))
+    */
+
+    return null
   }
 }
 
