@@ -40,6 +40,7 @@ class UserModule extends VuexModule {
     */
 
     return null
+    
   }
 }
 
